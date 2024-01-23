@@ -2,12 +2,20 @@
   "name": "proxy",
   "version": "1.0.0",
   "description": "A simple web proxy",
-  "type": "module",
-  "main": "src/index.mjs",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "check-types": "tsc --noEmit"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.3.3"
+  }
 }

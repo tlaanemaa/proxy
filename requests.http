@@ -1,2 +1,2 @@
-GET http://localhost:3000
-x-target: http://www.delfi.ee
+GET http://localhost:3000/todos/1
+x-target: https://jsonplaceholder.typicode.com

@@ -1,4 +1,7 @@
-export const staticHeaders = {
+export const TARGET_HEADER = "x-target";
+export const PORT = 3000;
+
+export const STATIC_HEADERS = {
   connection: "keep-alive",
   "cache-control": "max-age=0",
   "sec-ch-ua":
@@ -24,4 +27,4 @@ export const staticHeaders = {
   "sec-fetch-user": "?1",
   "sec-fetch-dest": "document",
   "accept-language": "en,et;q=0.9",
-};
+} as const;
