@@ -24,10 +24,10 @@ export default function proxyWs(
 ) {
   const target = getTargetFromQuery(req);
   if (!target) {
-    console.error(`Missing '${TARGET_QUERY_PARAM}' query parameter!`);
+    console.error(`[WS] Missing '${TARGET_QUERY_PARAM}' query parameter!`);
     return socket.end();
   }
 
-  console.log(`Proxying WS to ${req.method} ${target}${req.url}`);
+  console.log(`[WS] Proxying ${req.socket.remoteAddress} -> ${target}`);
   proxy.ws(req, socket, head, { target });
 }

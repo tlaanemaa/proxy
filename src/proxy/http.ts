@@ -42,7 +42,7 @@ export default function proxyHttp(req: IncomingMessage, res: ServerResponse) {
   const target = getTargetFromHeaders(req);
 
   if (!target) {
-    console.error(`Missing '${TARGET_HEADER}' header!`);
+    console.error(`[HTTP] Missing '${TARGET_HEADER}' header!`);
     return sendError(res, `Missing '${TARGET_HEADER}' header`);
   }
 
@@ -53,6 +53,8 @@ export default function proxyHttp(req: IncomingMessage, res: ServerResponse) {
     return;
   }
 
-  console.log(`Proxying HTTP to ${req.method} ${target}${req.url}`);
+  console.log(
+    `[HTTP] Proxying ${req.socket.remoteAddress} -> ${req.method} ${target}${req.url}`
+  );
   proxy.web(req, res, { target });
 }
