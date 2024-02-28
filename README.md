@@ -44,6 +44,6 @@ _This is assuming that the proxy server is running at `http://localhost:3000`_
 
 ```js
 const socket = new WebSocket(
-  "ws://localhost:3000?target=ws://echo.websocket.org"
+  "ws://localhost:3000?target=wss://echo.websocket.org"
 );
 ```
