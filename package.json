@@ -2,7 +2,7 @@
   "name": "proxy",
   "version": "1.0.0",
   "description": "A simple web proxy",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "start": "node .",
     "build": "tsc",
@@ -10,12 +10,12 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "ws": "^8.16.0"
-  },
   "devDependencies": {
+    "@types/http-proxy": "^1.17.14",
     "@types/node": "^20.11.5",
-    "@types/ws": "^8.5.10",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1"
   }
 }

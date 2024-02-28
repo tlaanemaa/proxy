@@ -1,33 +1,34 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import http from "node:http";
-import https from "node:https";
-import { STATIC_HEADERS, TARGET_HEADER } from "../constants";
-import { extractTargetUrl } from "../utils";
+import { TARGET_HEADER } from "../constants";
+import { proxy } from "./proxy";
 
 /**
- * Proxies a request to the target host.
+ * Extracts the target from http incoming request headers
  */
-export default function proxy(
-  request: IncomingMessage,
-  response: ServerResponse
-): void {
-  const target = extractTargetUrl(request.headers);
-  const client = target.protocol === "http" ? http : https;
+function getTargetFromHeaders(req: IncomingMessage): string | undefined {
+  const target = req.headers[TARGET_HEADER];
+  if (!target) return undefined;
+  return Array.isArray(target) ? target[0] : target;
+}
 
-  // Remove the target header from the request.
-  const { [TARGET_HEADER]: _, ...originalHeaders } = request.headers;
+/**
+ * Sends error message with provided http status code
+ */
+function sendError(res: ServerResponse, message: string, code = 400): void {
+  res.writeHead(code, { "Content-Type": "text/plain" });
+  res.end(message);
+}
 
-  const options = {
-    host: target.host,
-    path: request.url,
-    method: request.method,
-    headers: {
-      ...originalHeaders,
-      host: target.host,
-      ...STATIC_HEADERS,
-    },
-  };
+/**
+ * HTTP proxy handler
+ */
+export default function proxyHttp(req: IncomingMessage, res: ServerResponse) {
+  const target = getTargetFromHeaders(req);
+  if (!target) {
+    console.error(`Missing '${TARGET_HEADER}' header!`);
+    return sendError(res, `Missing '${TARGET_HEADER}' header`);
+  }
 
-  console.log(`Proxying: ${options.method} ${options.host}${options.path}`);
-  request.pipe(client.request(options, (res) => res.pipe(response)));
+  console.log(`Proxying HTTP to ${req.method} ${target}${req.url}`);
+  proxy.web(req, res, { target });
 }
