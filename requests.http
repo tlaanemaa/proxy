@@ -1,2 +1,7 @@
+
 GET http://localhost:3000/todos/1
-x-target: https://jsonplaceholder.typicode.com
+x-target-host: https://jsonplaceholder.typicode.com
+
+###
+GET http://localhost:3000
+x-target-host: https://echo.websocket.org

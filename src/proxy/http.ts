@@ -20,13 +20,37 @@ function sendError(res: ServerResponse, message: string, code = 400): void {
 }
 
 /**
+ * Sets CORS headers on the response
+ */
+function setCorsHeaders(res: ServerResponse) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+}
+
+/**
  * HTTP proxy handler
  */
 export default function proxyHttp(req: IncomingMessage, res: ServerResponse) {
+  setCorsHeaders(res);
   const target = getTargetFromHeaders(req);
+
   if (!target) {
     console.error(`Missing '${TARGET_HEADER}' header!`);
     return sendError(res, `Missing '${TARGET_HEADER}' header`);
+  }
+
+  // Respond to preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    res.writeHead(200);
+    res.end();
+    return;
   }
 
   console.log(`Proxying HTTP to ${req.method} ${target}${req.url}`);
