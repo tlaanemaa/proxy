@@ -2,7 +2,7 @@
   "name": "proxy",
   "version": "1.0.0",
   "description": "A simple web proxy",
-  "main": "dist/server.js",
+  "main": "./dist/index.js",
   "scripts": {
     "start": "node .",
     "build": "tsc",
