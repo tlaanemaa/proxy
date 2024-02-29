@@ -33,18 +33,19 @@ function setCorsHeaders(res: ServerResponse) {
  */
 export default function proxyHttp(req: IncomingMessage, res: ServerResponse) {
   setCorsHeaders(res);
-  const target = getTargetFromHeaders(req);
-
-  if (!target) {
-    console.error(`[HTTP] Missing '${TARGET_HEADER}' header!`);
-    return sendError(res, `Missing '${TARGET_HEADER}' header!`);
-  }
 
   // Respond to preflight OPTIONS request
   if (req.method === "OPTIONS") {
     res.writeHead(200);
     res.end();
     return;
+  }
+
+  const target = getTargetFromHeaders(req);
+
+  if (!target) {
+    console.error(`[HTTP] Missing '${TARGET_HEADER}' header!`);
+    return sendError(res, `Missing '${TARGET_HEADER}' header!`);
   }
 
   console.log(
