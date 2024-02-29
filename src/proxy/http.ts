@@ -16,7 +16,7 @@ function getTargetFromHeaders(req: IncomingMessage): string | undefined {
  */
 function sendError(res: ServerResponse, message: string, code = 400): void {
   res.writeHead(code, { "Content-Type": "text/plain" });
-  res.end(message);
+  res.end(JSON.stringify({ error: message }));
 }
 
 /**
@@ -24,14 +24,8 @@ function sendError(res: ServerResponse, message: string, code = 400): void {
  */
 function setCorsHeaders(res: ServerResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
 }
 
 /**
@@ -43,7 +37,7 @@ export default function proxyHttp(req: IncomingMessage, res: ServerResponse) {
 
   if (!target) {
     console.error(`[HTTP] Missing '${TARGET_HEADER}' header!`);
-    return sendError(res, `Missing '${TARGET_HEADER}' header`);
+    return sendError(res, `Missing '${TARGET_HEADER}' header!`);
   }
 
   // Respond to preflight OPTIONS request
